@@ -1,9 +1,11 @@
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
+import MyContext from '../context'
 
-const UserCard = ({ user, dispatch, setIsEdit, setEditData }) => {
-	const [isHover, setIsHover] = useState(false)
+const UserCard = ({user}) => {
+	const { dispatch, setIsEdit, setEditData } = useContext(MyContext)
+	
 	const deletUser = async (id) => {
 		const { data } = await axios.delete(`http://localhost:3000/users/${id}`)
 		dispatch({type: 'delete', payload: id})

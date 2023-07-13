@@ -1,71 +1,71 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import MyContext from '../context'
 
-const UserForm = ({usersRead, dispatch, editData, isEdit, setIsEdit, setEditData}) => {
-	
+const UserForm = () => {
+	const { usersRead, dispatch, editData, isEdit, setIsEdit, setEditData } = useContext(MyContext)
+
 	const [userForm, setUserForm] = useState({
 		name: '',
 		email: '',
 		phone: ''
 	})
 
-	
-
 	const [errMsg, setErrMsg] = useState('')
 
 	const postUserInfo = async (url) => {
 		const { data } = await axios.post(url, userForm)
-		dispatch({type:'create', payload: data})
+		dispatch({ type: 'create', payload: data })
 		console.log(data);
 	}
 
-	const updateUserInfo = async (id)=>{
+	const updateUserInfo = async (id) => {
 		console.log(id);
 		console.log(userForm);
 		const { data } = await axios.put(`http://localhost:3000/users/${id}`, userForm)
-		dispatch({type: 'update', payload: data})
+		dispatch({ type: 'update', payload: data })
 		console.log(data);
 	}
 
 	const handleSubmit = async (e) => {
 		e.preventDefault()
-	 try {
-		if (!userForm.email || !userForm.name || !userForm.phone) {
-			setErrMsg('All fields are mandatory')
-		}
-		else if(isEdit){
-			updateUserInfo(isEdit).then(() => {
-				setEditData({})
-			setIsEdit('')
+		try {
+			if (!userForm.email || !userForm.name || !userForm.phone) {
+				setErrMsg('All fields are mandatory')
+			}
+			else if (isEdit) {
+				updateUserInfo(isEdit).then(() => {
+					setEditData({})
+					setIsEdit('')
 
-				setUserForm({
-					name: '',
-					email: '',
-					phone: ''
+					setUserForm({
+						name: '',
+						email: '',
+						phone: ''
+					})
 				})
-			})
 
-		}
-		else {
-			postUserInfo("http://localhost:3000/users").then(() => {
-				setUserForm({
-					name: '',
-					email: '',
-					phone: ''
+			}
+			else {
+				postUserInfo("http://localhost:3000/users").then(() => {
+					setUserForm({
+						name: '',
+						email: '',
+						phone: ''
+					})
 				})
-			})
+			}
+		} catch (error) {
+			console.log(error);
 		}
-	 } catch (error) {
-		console.log(error);
-	 }
 	}
 
-	useEffect(()=>{
-		if(isEdit){
+	useEffect(() => {
+		if (isEdit) {
 			setUserForm(editData)
 			console.log('no data');
 		}
-	},[isEdit])
+	}, [isEdit])
 
 	const handleChange = (e) => {
 		setErrMsg('')
@@ -97,15 +97,15 @@ const UserForm = ({usersRead, dispatch, editData, isEdit, setIsEdit, setEditData
 				/>
 			</label>
 			<div className='flex'>
-			<button type='submit' className='mx-auto bg-red-600 px-2 py-1 rounded-sm text-white font-bold my-3'>{isEdit ? 'Update' : 'Submit'}</button>
-			<button type='reset' className='mx-auto bg-red-600 px-2 py-1 rounded-sm text-white font-bold my-3' onClick={()=>{
-				setUserForm({
-					name: '',
-					email: '',
-					phone: ''
-				})
-				setErrMsg('')
-			}}>Reset</button>
+				<button type='submit' className='mx-auto bg-red-600 px-2 py-1 rounded-sm text-white font-bold my-3'>{isEdit ? 'Update' : 'Submit'}</button>
+				<button type='reset' className='mx-auto bg-red-600 px-2 py-1 rounded-sm text-white font-bold my-3' onClick={() => {
+					setUserForm({
+						name: '',
+						email: '',
+						phone: ''
+					})
+					setErrMsg('')
+				}}>Reset</button>
 			</div>
 			<p className='text-center text-red-700 font-bold'>{errMsg.length > 0 ? <p>*{errMsg}</p> : ''}</p>
 		</form>
