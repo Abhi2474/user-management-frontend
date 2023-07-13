@@ -1,14 +1,20 @@
 import React from 'react'
-import { Home, UserForm } from './components';
+import { Home } from './components';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import UserPage from './page/UserPage';
 
 function App() {
 
 
   return (
     <>
-      <h1>hello world</h1>
-      <Home/>
-      <UserForm/>
+    <BrowserRouter>
+    <Routes>
+      <Route path='/' element={ <Home/> } />
+      <Route path='/:id' element={ <UserPage/> } />
+    </Routes>
+    </BrowserRouter>
+      
     </>
   )
 }

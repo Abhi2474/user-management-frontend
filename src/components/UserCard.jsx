@@ -1,24 +1,33 @@
 import axios from 'axios'
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 
-const UserCard = ({ user }) => {
+const UserCard = ({ user, dispatch, setIsEdit, setEditData }) => {
 	const [isHover, setIsHover] = useState(false)
 	const deletUser = async (id) => {
 		const { data } = await axios.delete(`http://localhost:3000/users/${id}`)
+		dispatch({type: 'delete', payload: id})
 		console.log(data);
 	}
+
+	const handleUpdate = (user)=>{
+		setIsEdit(user._id)
+		setEditData({
+			name:user.name,
+			email:user.email,
+			phone:user.phone
+		})
+	}
 	return (
-		<div className='my-4 bg-blue-400 w-1/4 p-5 rounded-sm' onMouseOver={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
-			<ul className=''>
-				<li>Name: {user.name}</li>
-				<li>Email: {user.email}</li>
-				<li>Phone: {user.phone}</li>
-			</ul>
-			<div className={`flex gap-4 text-white ${isHover ? 'opacity-100' : 'opacity-0'}`}>
-				<button className='bg-green-700 p-2'>Update</button>
-				<button onClick={() => deletUser(user._id)} className='bg-red-700 p-2'>Delete</button>
-			</div>
-		</div>
+		<>
+			<tr>
+				<td className="px-6 py-4 whitespace-nowrap">{user._id}</td>
+				<td className="px-6 py-4 whitespace-nowrap">{user.name}</td>
+				<td className="px-6 py-4 whitespace-nowrap"><Link to={`/${user._id}`} className='bg-blue-400 p-2 rounded-sm'>View</Link></td>
+				<td className="px-6 py-4 whitespace-nowrap"><button className='bg-green-400 p-2 rounded-sm' onClick={()=>handleUpdate(user)}>Update</button></td>
+				<td className="px-6 py-4 whitespace-nowrap"><button className='bg-red-400 p-2 rounded-sm' onClick={() => deletUser(user._id)} >Delete</button></td>
+			</tr>
+		</>
 	)
 }
 
