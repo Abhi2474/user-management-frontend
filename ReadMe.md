@@ -25,5 +25,3 @@ npm run dev
 
 * And now the server is live.
 
----
-
