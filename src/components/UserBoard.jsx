@@ -1,16 +1,18 @@
 import axios from "axios";
-import React, { useContext, useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 import UserCard from "./UserCard";
-import MyContext from "../context";
+import { useDispatch, useSelector } from "react-redux";
+import { read } from "../slice/userSlice";
 
 const UserBoard = () => {
-  const { usersRead, dispatch } = useContext(MyContext);
+  const usersList = useSelector(state => state.userArray.users)
+  const dispatch = useDispatch()
 
   const fetchData = async (url) => {
     try {
       const { data } = await axios.get(url);
       if (data) {
-        dispatch({ type: "read", payload: data });
+        dispatch(read(data))
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -22,30 +24,27 @@ const UserBoard = () => {
     console.log("main fetch");
   }, []);
 
+  const tableHeading = ['id', 'name', 'view', 'update', 'delete' ]
+
+
   return (
     <>
       <table className="min-w-full border divide-y divide-gray-200 mb-40 ">
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              id
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              name
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              view
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Edit
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Delete
-            </th>
+            {
+              tableHeading.map((item, id) => {
+                return (
+                  <th key={id} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    {item}
+                  </th>
+                )
+              })
+            }
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {usersRead.map((user) => {
+          {usersList?.map((user) => {
             return <UserCard key={user._id} user={user} />;
           })}
         </tbody>

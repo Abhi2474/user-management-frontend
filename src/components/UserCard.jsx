@@ -1,24 +1,24 @@
 import axios from 'axios'
-import React, { useContext, useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
-import MyContext from '../context'
+import { useDispatch } from 'react-redux'
+import { deleteUser, editUser } from '../slice/userSlice'
 
 const UserCard = ({user}) => {
-	const { dispatch, setIsEdit, setEditData } = useContext(MyContext)
+	const dispatch = useDispatch()
 	
 	const deletUser = async (id) => {
 		const { data } = await axios.delete(`http://localhost:3000/users/${id}`)
-		dispatch({type: 'delete', payload: id})
+		dispatch(deleteUser(id))
 		console.log(data);
 	}
 
 	const handleUpdate = (user)=>{
-		setIsEdit(user._id)
-		setEditData({
+		dispatch(editUser({id:user._id, data: {
 			name:user.name,
 			email:user.email,
 			phone:user.phone
-		})
+		}}))
 	}
 	return (
 		<>

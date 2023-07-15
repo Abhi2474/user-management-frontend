@@ -1,9 +1,7 @@
 import React from 'react'
-import UserBoard from '../components/UserBoard';
-import UserForm from '../components/UserForm';
+import { UserBoard, UserForm } from '../components';
 
 const Home = () => {
-
 
 	return (
 		<>
