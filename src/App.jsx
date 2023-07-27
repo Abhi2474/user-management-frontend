@@ -11,11 +11,11 @@ const store = configureStore({
 	}
 })
 
+
+function App() {
 useEffect(()=>{
 	document.title = "User Management System"
 },[])
-
-function App() {
 
 	return (
 		<>
