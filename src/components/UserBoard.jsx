@@ -20,11 +20,11 @@ const UserBoard = () => {
   };
 
   useEffect(() => {
-    fetchData("http://localhost:3000/users");
+    fetchData(`${import.meta.env.VITE_DB_URL}`);
     console.log("main fetch");
   }, []);
 
-  const tableHeading = ['id', 'name', 'view', 'update', 'delete' ]
+  const tableHeading = ['id', 'name', 'view', 'update', 'delete']
 
 
   return (

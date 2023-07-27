@@ -9,7 +9,7 @@ const UserPage = () => {
   useEffect(() => {
     const fetchSingleUser = async (id) => {
       try {
-        const { data } = await axios.get(`http://localhost:3000/users/${id}`)
+        const { data } = await axios.get(`${import.meta.env.VITE_DB_URL}/${id}`)
         if (data) {
           setSingleUser(data)
         }

@@ -57,7 +57,7 @@ const UserForm = () => {
 	}
 
 	const updateUserInfo = async (id) => {
-		const { data } = await axios.put(`http://localhost:3000/users/${id}`, userForm)
+		const { data } = await axios.put(`${import.meta.env.VITE_DB_URL}/${id}`, userForm)
 		dispatch(update({ ...userForm, _id: userEditId }))
 	}
 
@@ -76,7 +76,7 @@ const UserForm = () => {
 			}
 
 			else {
-				postUserInfo("http://localhost:3000/users").then(() => {
+				postUserInfo(`${import.meta.env.VITE_DB_URL}`).then(() => {
 					setUserForm(initialForm)
 				})
 			}
@@ -98,7 +98,7 @@ const UserForm = () => {
 
 	}
 
-	
+
 	return (
 		<form className='bg-red-300 p-10 mb-20 mx-auto w-1/3 flex flex-col rounded-sm' onSubmit={handleSubmit}>
 			{
