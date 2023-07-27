@@ -12,7 +12,7 @@ const store = configureStore({
 })
 
 useEffect(()=>{
-	document.title = 'User Management System"
+	document.title = "User Management System"
 },[])
 
 function App() {
