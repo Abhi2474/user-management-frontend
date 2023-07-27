@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Home, UserPage } from './page';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -10,6 +10,10 @@ const store = configureStore({
 		userArray: userReducer
 	}
 })
+
+useEffect(()=>{
+	document.title = 'User Management System"
+},[])
 
 function App() {
 
